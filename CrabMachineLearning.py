@@ -1,35 +1,26 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
 
 # In this project I have set out to build a supervised machine learning model on a dataset
 # consisting of crabs, their age, and several physical attributes. The goal is to 
 # based on the physical attributes build a model that can predict the age of a crab
 
+# The dataset used can be found at the following link: 
+# https://www.kaggle.com/datasets/sidhus/crab-age-prediction
 
-# In[2]:
 
+# Creating the dataframe 
 
 import pandas as pd
 df = pd.read_csv("CrabAgePrediction.csv")
 
 
-# In[3]:
-
+# Gathering some basic information about the data 
 
 df.head()
 
 
-# In[4]:
-
-
 df.info()
 
-
-# In[5]:
-
+# Importing features from the scikit library that will be used for the modeling later on
 
 from sklearn.linear_model import LinearRegression
 from sklearn.tree import DecisionTreeRegressor
@@ -45,19 +36,13 @@ from sklearn.pipeline import make_pipeline
 from sklearn.model_selection import train_test_split
 
 
-# In[6]:
-
 
 # Performing some initial exploratory data analysis, to see if certain features
 # seem to have a relationship with age
 
 
-# In[7]:
-
-
 import matplotlib.pyplot as plt
 
-# Assuming your DataFrame is named df
 fig, axs = plt.subplots(7, 1, figsize=(10, 15))  # Create a figure with 3 sub-plots arranged in 1 column
 
 # Scatter plot for Weight vs Age
@@ -98,11 +83,8 @@ axs[6].set_xlabel('Viscera Weight')
 axs[6].set_ylabel('Age')
 axs[6].set_title('Viscera Weight vs Age')
 
-plt.tight_layout()  # Adjusts the space between the plots
+plt.tight_layout()
 plt.show()
-
-
-# In[8]:
 
 
 # There seems to be some relationship, although weak, between physical attributes
@@ -119,10 +101,6 @@ filtered = df[~((df < (Q1 - 1.5 * IQR)) |(df > (Q3 + 1.5 * IQR))).any(axis=1)]
 
 df = filtered
 
-
-# In[9]:
-
-
 import numpy as np
 
 # Testing out some feature engineering (ended up using none of the created features)
@@ -130,9 +108,6 @@ import numpy as np
 df['BMI'] = df['Weight'] / (df['Length']**2)
 df['Volume'] = df['Length'] * df['Diameter'] * df['Height']
 df['Area'] = np.pi * (df['Diameter'] / 2)**2
-
-
-# In[10]:
 
 
 # Creating X and y, target variable Age
@@ -143,9 +118,6 @@ y = df["Age"]
 # Performing the X/y split
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, random_state = 42)
-
-
-# In[11]:
 
 
 # Preprocessing
@@ -169,7 +141,6 @@ preprocessor = make_column_transformer((num_transformer, num_features),
                                       (cat_transformer, cat_features))
 
 
-# In[12]:
 
 
 # Testing out different models with standard parameters
@@ -192,14 +163,9 @@ for reg in regressors:
     print("")
 
 
-# In[13]:
-
 
 # SVR and RandomForestRegressor got the best scores, testing them both with
 # hyperparameter tuning
-
-
-# In[14]:
 
 
 # SVR
@@ -226,15 +192,9 @@ print("Best score: ", grid_svr.best_score_)
 print("Best params: ", grid_svr.best_params_)
 
 
-# In[15]:
-
-
 model_svr = grid_svr.best_estimator_
 model_svr.fit(X_train, y_train)
 model_svr.score(X_train, y_train)
-
-
-# In[16]:
 
 
 # RandomForestRegressor
@@ -261,21 +221,11 @@ print("Best score: ", grid_rf.best_score_)
 print("Best params: ", grid_rf.best_params_)
 
 
-# In[17]:
-
-
 model_rf = grid_rf.best_estimator_
 model_rf.fit(X_train, y_train)
 model_rf.score(X_train, y_train)
 
-
-# In[18]:
-
-
 # Decided to go with RandomForestRegressor.
-
-
-# In[19]:
 
 
 from sklearn.metrics import mean_squared_error, r2_score
@@ -289,8 +239,6 @@ r2 = r2_score(y_train, y_pred)
 print(f'Mean Squared Error: {mse}')
 print(f'R^2 Score: {r2}')
 
-
-# In[20]:
 
 
 # Creating a dummy regressor with strategy "mean"
@@ -315,9 +263,6 @@ print(f'Mean Squared Error: {mse}')
 print(f'R^2 Score: {r2}')
 
 
-# In[21]:
-
-
 # Testing my model on the test data
 y_pred = model_rf.predict(X_test)
 
@@ -329,15 +274,6 @@ print(f'Mean Squared Error: {mse}')
 print(f'R^2 Score: {r2}')
 
 
-# In[ ]:
-
-
-
-
-
-# In[22]:
-
-
 # Visualizing how my model performs. The closer the dots are to the red line, the better.
 plt.figure(figsize=(8, 5))
 plt.scatter(y_test, y_pred, alpha = 0.5)
@@ -347,8 +283,6 @@ plt.title("Actual vs Predicted")
 plt.plot([min(y_test), max(y_test)], [min(y_test), max(y_test)], color='red', linestyle='--')  # Line of perfect fit
 plt.show()
 
-
-# In[ ]:
 
 
 
