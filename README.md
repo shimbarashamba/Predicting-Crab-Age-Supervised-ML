@@ -3,7 +3,7 @@
 
 # Predicting-Crab-Age-Supervised-ML
 Supervised machine learning has been used to predict crab age based on physical attributes. The dataset used can be found here: https://www.kaggle.com/datasets/sidhus/crab-age-prediction
-Many regression models were tested, RandomForestRegression was chosen in the end. The hyperparameters were then tuned and the model was tested against a dummy regressor with strategy mean, as well as a regular linear regression model with standard settings.
+Many regression models were tested, RandomForestRegression was chosen in the end. The hyperparameters were then tuned using Grid Search Cross Validation and the model was tested against a dummy regressor with strategy mean, as well as a regular linear regression model with standard settings.
 
 ![Slide3](https://github.com/shimbarashamba/Predicting-Crab-Age-Supervised-ML/assets/73606183/7b8f1eec-ee60-4e2f-a896-4189369c31b1)
 ![Slide4](https://github.com/shimbarashamba/Predicting-Crab-Age-Supervised-ML/assets/73606183/f907c1b0-d13b-4283-8cdd-9869e18b8401)
